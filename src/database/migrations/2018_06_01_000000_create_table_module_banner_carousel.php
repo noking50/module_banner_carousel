@@ -51,7 +51,7 @@ class CreateTableModuleBannerCarousel extends Migration {
             $table->longText('photo_m')->comment('手機圖片 json格式');
             $table->string('button_text', 50)->comment('按鈕文字');
 
-            $table->primary(["{$datatable}_id", 'lang'], 'PRIMARY');
+            $table->primary(["{$datatable}_id", 'lang'], 'pk');
         });
     }
 
