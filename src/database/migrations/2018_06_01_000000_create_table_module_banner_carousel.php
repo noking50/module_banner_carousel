@@ -27,7 +27,7 @@ class CreateTableModuleBannerCarousel extends Migration {
             $table->integer("update_{$datatable_admin}_id")->unsigned()->nullable()->comment('更新人員');
             $table->char("module_group", 10)->collation('ascii_bin')->comment('資料分組');
             $table->string('button_link', 200)->comment('按鈕連結');
-            $table->boolean('enable')->unsigned()->comment('狀態 0:停用 1:啟用');
+            $table->boolean('status')->unsigned()->comment('狀態 0:停用 1:啟用');
             $table->boolean('publish')->unsigned()->comment('發布 0:暫存 1:發布');
             $table->integer('order')->unsigned()->comment('排序');
 
