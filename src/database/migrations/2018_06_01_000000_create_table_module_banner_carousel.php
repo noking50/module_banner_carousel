@@ -34,7 +34,7 @@ class CreateTableModuleBannerCarousel extends Migration {
             $table->index("create_{$datatable_admin}_id");
             $table->index("update_{$datatable_admin}_id");
             $table->index('order');
-            $table->index('page');
+            $table->index('module_group');
             $table->index(['status', 'publish']);
         });
         
