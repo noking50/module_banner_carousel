@@ -83,7 +83,7 @@ class ModuleBannerCarouselService {
         if ($result) {
             $order_target_id = intval(array_get($data, 'order'));
             $order_old = $result->id;
-            $order_new = $this->order($result->id, $order_old, $order_target_id);
+            $order_new = $this->order($result->id, $group, $order_old, $order_target_id);
 
             $result->order = $order_new;
         }
@@ -101,7 +101,7 @@ class ModuleBannerCarouselService {
         if ($result) {
             $order_target_id = intval(array_get($data, 'order'));
             $order_old = $result->get('after')->order;
-            $order_new = $this->order($result->get('after')->id, $order_old, $order_target_id);
+            $order_new = $this->order($result->get('after')->id, $group, $order_old, $order_target_id);
 
             $result->get('after')->order = $order_new;
         }
