@@ -7,26 +7,28 @@ use Noking50\Modules\BannerCarousel\Models\ModuleBannerCarousel;
 class ModuleBannerCarouselRepository {
 
     protected $moduleBannerCarousel;
+    protected $table;
 
     public function __construct(ModuleBannerCarousel $moduleBannerCarousel) {
         $this->moduleBannerCarousel = $moduleBannerCarousel;
+        $this->table = $this->moduleBannerCarousel->getTable();
     }
 
     # List
 
     public function listBackend($group, $lang = null, $sorts = null) {
         $dataSet = $this->moduleBannerCarousel->select([
-                    "{$this->moduleBannerCarousel->table}.id",
-                    "{$this->moduleBannerCarousel->table}.created_at",
-                    "{$this->moduleBannerCarousel->table}.status",
+                    "{$this->table}.id",
+                    "{$this->table}.created_at",
+                    "{$this->table}.status",
                 ])
                 ->translate([
                     'name'
                         ], $lang)
                 ->moduleGroup($group)
                 ->setSort([
-                    ["{$this->moduleBannerCarousel->table}.order", 'desc'],
-                    ["{$this->moduleBannerCarousel->table}.id", 'desc'],
+                    ["{$this->table}.order", 'desc'],
+                    ["{$this->table}.id", 'desc'],
                 ])
                 ->setPagination()
                 ->get();
@@ -37,7 +39,7 @@ class ModuleBannerCarouselRepository {
     public function listFrontend($group, $lang = null, $sorts = null) {
         $take = intval(config('module_banner_carousel.banner_count', 0));
         $query = $this->moduleBannerCarousel->select([
-                    "{$this->moduleBannerCarousel->table}.id",
+                    "{$this->table}.id",
                 ])
                 ->translate([
                     'title',
@@ -49,8 +51,8 @@ class ModuleBannerCarouselRepository {
                 ->moduleGroup($group)
                 ->active()
                 ->setSort([
-            ["{$this->moduleBannerCarousel->table}.order", 'desc'],
-            ["{$this->moduleBannerCarousel->table}.id", 'desc'],
+            ["{$this->table}.order", 'desc'],
+            ["{$this->table}.id", 'desc'],
         ]);
         if ($take > 0) {
             $query->take($take);
@@ -62,18 +64,18 @@ class ModuleBannerCarouselRepository {
 
     public function listOrder($group, $exclude_id = null, $lang = null) {
         $query = $this->moduleBannerCarousel->select([
-                    "{$this->moduleBannerCarousel->table}.id",
+                    "{$this->table}.id",
                 ])
                 ->translate([
                     'name'
                         ], $lang)
                 ->moduleGroup($group)
                 ->setSort([
-            ["{$this->moduleBannerCarousel->table}.order", 'desc'],
-            ["{$this->moduleBannerCarousel->table}.id", 'desc'],
+            ["{$this->table}.order", 'desc'],
+            ["{$this->table}.id", 'desc'],
         ]);
         if (!is_null($exclude_id)) {
-            $query->where("{$this->moduleBannerCarousel->table}.order", '!=', $exclude_id);
+            $query->where("{$this->table}.order", '!=', $exclude_id);
         }
         $dataSet = $query->get();
 
@@ -84,28 +86,28 @@ class ModuleBannerCarouselRepository {
 
     public function detail($id, $group, $columns = ['*']) {
         return $this->moduleBannerCarousel
-                        ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
+                        ->where("{$this->table}.id", '=', $id)
                         ->moduleGroup($group)
                         ->first($columns);
     }
 
     public function detailWithTrashed($id, $group, $columns = ['*']) {
         return $this->moduleBannerCarousel->withTrashed()
-                        ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
+                        ->where("{$this->table}.id", '=', $id)
                         ->moduleGroup($group)
                         ->first($columns);
     }
 
     public function detailBackend($id, $group) {
         $dataRow = $this->moduleBannerCarousel->select([
-                    "{$this->moduleBannerCarousel->table}.id",
-                    "{$this->moduleBannerCarousel->table}.created_at",
-                    "{$this->moduleBannerCarousel->table}.updated_at",
-                    "{$this->moduleBannerCarousel->table}.button_link",
-                    "{$this->moduleBannerCarousel->table}.status",
+                    "{$this->table}.id",
+                    "{$this->table}.created_at",
+                    "{$this->table}.updated_at",
+                    "{$this->table}.button_link",
+                    "{$this->table}.status",
                 ])
                 ->selectUpdaterAdmin()
-                ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
+                ->where("{$this->table}.id", '=', $id)
                 ->moduleGroup($group)
                 ->first();
 
@@ -114,13 +116,13 @@ class ModuleBannerCarouselRepository {
 
     public function detailBackendEdit($id, $group) {
         $dataRow = $this->moduleBannerCarousel->select([
-                    "{$this->moduleBannerCarousel->table}.id",
-                    "{$this->moduleBannerCarousel->table}.created_at",
-                    "{$this->moduleBannerCarousel->table}.updated_at",
-                    "{$this->moduleBannerCarousel->table}.button_link",
-                    "{$this->moduleBannerCarousel->table}.status",
+                    "{$this->table}.id",
+                    "{$this->table}.created_at",
+                    "{$this->table}.updated_at",
+                    "{$this->table}.button_link",
+                    "{$this->table}.status",
                 ])
-                ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
+                ->where("{$this->table}.id", '=', $id)
                 ->moduleGroup($group)
                 ->first();
 
@@ -131,7 +133,7 @@ class ModuleBannerCarouselRepository {
 
     public function valueOrder($id, $group) {
         return $this->moduleBannerCarousel
-                        ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
+                        ->where("{$this->table}.id", '=', $id)
                         ->moduleGroup($group)
                         ->value('order');
     }
@@ -147,7 +149,7 @@ class ModuleBannerCarouselRepository {
     public function update($id, $group, $data) {
         $before = $this->detail($id, $group);
         $result = $this->moduleBannerCarousel
-                ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
+                ->where("{$this->table}.id", '=', $id)
                 ->moduleGroup($group)
                 ->update($data);
         $after = $this->detail($id, $group);
@@ -164,8 +166,8 @@ class ModuleBannerCarouselRepository {
     public function delete($id, $group) {
         $before = $this->detail($id, $group);
         $result = $this->moduleBannerCarousel
-                ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
-                ->whereNull("{$this->moduleBannerCarousel->table}.deleted_at")
+                ->where("{$this->table}.id", '=', $id)
+                ->whereNull("{$this->table}.deleted_at")
                 ->moduleGroup($group)
                 ->delete();
         $after = $this->detailWithTrashed($id, $group);
@@ -181,7 +183,7 @@ class ModuleBannerCarouselRepository {
 
     public function order($id, $group, $order_new, $order_old) {
         $this->moduleBannerCarousel
-                ->where("{$this->moduleBannerCarousel->table}.id", '=', $id)
+                ->where("{$this->table}.id", '=', $id)
                 ->moduleGroup($group)
                 ->update([
                     'order' => $order_new,
@@ -193,14 +195,14 @@ class ModuleBannerCarouselRepository {
         if (!empty($after)) {
             $query = $this->moduleBannerCarousel
                     ->withTrashed()
-                    ->where("{$this->moduleBannerCarousel->table}.id", '!=', $id);
+                    ->where("{$this->table}.id", '!=', $id);
             if ($order_old < $order_new) {
-                $query->where("{$this->moduleBannerCarousel->table}.order", '>', $order_old)
-                        ->where("{$this->moduleBannerCarousel->table}.order", '<=', $order_new)
+                $query->where("{$this->table}.order", '>', $order_old)
+                        ->where("{$this->table}.order", '<=', $order_new)
                         ->decrement('order');
             } else {
-                $query->where("{$this->moduleBannerCarousel->table}.order", '<', $order_old)
-                        ->where("{$this->moduleBannerCarousel->table}.order", '>=', $order_new)
+                $query->where("{$this->table}.order", '<', $order_old)
+                        ->where("{$this->table}.order", '>=', $order_new)
                         ->increment('order');
             }
         }
