@@ -74,7 +74,7 @@ class ModuleBannerCarouselService {
             'create_member_admin_id' => User::id(),
             'update_member_admin_id' => User::id(),
             'module_group' => $group,
-            'button_link' => array_get($data, 'button_link', ''),
+            'button_link' => array_get($data, 'button_link', '') ?: '',
             'status' => array_get($data, 'status'),
             'publish' => 1,
             'order' => 0,
@@ -94,7 +94,7 @@ class ModuleBannerCarouselService {
     public function edit($id, $group, $data) {
         $data_update = [
             'update_member_admin_id' => User::id(),
-            'button_link' => array_get($data, 'button_link', ''),
+            'button_link' => array_get($data, 'button_link', '') ?: '',
             'status' => array_get($data, 'status'),
         ];
         $result = $this->moduleBannerCarouselRepository->update($id, $group, $data_update);

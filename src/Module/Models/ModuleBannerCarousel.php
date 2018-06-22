@@ -11,9 +11,9 @@ class ModuleBannerCarousel extends BaseModel {
 
     protected $guarded = [];
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct($attributes = []) {
         $this->table = config('module_banner_carousel.datatable');
+        parent::__construct($attributes);
     }
     
     /**
