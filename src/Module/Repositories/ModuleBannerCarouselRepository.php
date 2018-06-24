@@ -62,7 +62,7 @@ class ModuleBannerCarouselRepository {
         return $dataSet;
     }
 
-    public function listOrder($group, $exclude_id = null, $lang = null) {
+    public function listOrder($group, $lang = null) {
         $query = $this->moduleBannerCarousel->select([
                     "{$this->table}.id",
                 ])
@@ -74,9 +74,6 @@ class ModuleBannerCarouselRepository {
             ["{$this->table}.order", 'desc'],
             ["{$this->table}.id", 'desc'],
         ]);
-        if (!is_null($exclude_id)) {
-            $query->where("{$this->table}.order", '!=', $exclude_id);
-        }
         $dataSet = $query->get();
 
         return $dataSet;
@@ -142,6 +139,14 @@ class ModuleBannerCarouselRepository {
 
     public function insert($data) {
         $result = $this->moduleBannerCarousel->create($data);
+        if ($result) {
+            $this->moduleBannerCarousel
+                    ->where("{$this->table}.id", '=', $result->id)
+                    ->update([
+                        'order' => $result->id,
+                    ]);
+            $result->order = $result->id;
+        }
 
         return $result;
     }
@@ -188,9 +193,6 @@ class ModuleBannerCarouselRepository {
                 ->update([
                     'order' => $order_new,
         ]);
-        if ($order_new == $order_old) {
-            return;
-        }
         $after = $this->detail($id, $group);
         if (!empty($after)) {
             $query = $this->moduleBannerCarousel

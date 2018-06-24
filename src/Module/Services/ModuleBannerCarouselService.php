@@ -32,11 +32,8 @@ class ModuleBannerCarouselService {
         return $dataSet;
     }
 
-    public function getListOrder($group, $exclude_id = null) {
-        $dataSet = $this->moduleBannerCarouselRepository->listOrder($group, $exclude_id);
-        foreach ($dataSet as $k => $v) {
-            $dataSet[$k]->photo = head(\FileUpload::getFiles($v->photo));
-        }
+    public function getListOrder($group) {
+        $dataSet = $this->moduleBannerCarouselRepository->listOrder($group);
 
         return $dataSet;
     }
@@ -81,8 +78,8 @@ class ModuleBannerCarouselService {
         ];
         $result = $this->moduleBannerCarouselRepository->insert($data_insert);
         if ($result) {
-            $order_target_id = intval(array_get($data, 'order'));
-            $order_old = $result->id;
+            $order_target_id = intval(array_get($data, 'order_target_id'));
+            $order_old = $result->order;
             $order_new = $this->order($result->id, $group, $order_old, $order_target_id);
 
             $result->order = $order_new;
@@ -99,7 +96,7 @@ class ModuleBannerCarouselService {
         ];
         $result = $this->moduleBannerCarouselRepository->update($id, $group, $data_update);
         if ($result) {
-            $order_target_id = intval(array_get($data, 'order'));
+            $order_target_id = intval(array_get($data, 'order_target_id'));
             $order_old = $result->get('after')->order;
             $order_new = $this->order($result->get('after')->id, $group, $order_old, $order_target_id);
 
@@ -127,13 +124,16 @@ class ModuleBannerCarouselService {
 
     public function order($id, $group, $order_old, $order_target_id) {
         $order_new = $order_old;
-        if ($order_target_id > 0) {
-            $order_tmp = intval($this->moduleBannerCarouselRepository->valueOrder($order_target_id, $group));
-            if ($order_tmp > 0) {
-                $order_new = $order_tmp;
-            }
+        if ($order_target_id <= 0 || $id == $order_target_id) {
+            return $order_new;
         }
-        $this->moduleBannerCarouselRepository->order($id, $group, $order_new, $order_old);
+
+        $order_tmp = intval($this->moduleBannerCarouselRepository->valueOrder($order_target_id, $group));
+        if ($order_tmp > 0 && $order_tmp != $order_new) {
+            $order_new = $order_tmp;
+            $this->moduleBannerCarouselRepository->order($id, $group, $order_new, $order_old);
+        }
+        return $order_new;
     }
 
     # lang

@@ -47,7 +47,7 @@ class OutputService {
         $id = Route::input('id', 0);
 
         $dataRow_module_banner_carousel = $this->moduleBannerCarouselService->getDetailBackendEdit($id, $group);
-        $dataSet_module_banner_carousel = $this->moduleBannerCarouselService->getListOrder($group, $id);
+        $dataSet_module_banner_carousel = $this->moduleBannerCarouselService->getListOrder($group);
 
         $langs = is_null($dataRow_module_banner_carousel) ? [] : $dataRow_module_banner_carousel->lang->pluck('lang')->toArray();
         $form_choose_lang = $this->languageService->getListFormChoose($langs);
