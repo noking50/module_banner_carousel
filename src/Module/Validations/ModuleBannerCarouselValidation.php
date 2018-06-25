@@ -17,8 +17,8 @@ class ModuleBannerCarouselValidation extends BaseValidation {
             'name' => ['string', 'required', 'max:100'],
             'title' => ['string', 'nullable', 'max:100'],
             'subtitle' => ['string', 'nullable', 'max:100'],
-            'photo' => [new JsonFile(1, 1)],
-            'photo_m' => [new JsonFile(1, 1)],
+            'photo' => ['required', new JsonFile(1, 1)],
+            'photo_m' => ['required', new JsonFile(1, 1)],
             'button_text' => ['string', 'nullable', 'max:50'],
         ];
         $attributes = array_merge(
@@ -46,8 +46,8 @@ class ModuleBannerCarouselValidation extends BaseValidation {
             'name' => ['string', 'required', 'max:100'],
             'title' => ['string', 'nullable', 'max:100'],
             'subtitle' => ['string', 'nullable', 'max:100'],
-            'photo' => [new JsonFile(1, 1)],
-            'photo_m' => [new JsonFile(1, 1)],
+            'photo' => ['required', new JsonFile(1, 1)],
+            'photo_m' => ['required', new JsonFile(1, 1)],
             'button_text' => ['string', 'nullable', 'max:50'],
         ];
         $attributes = array_merge(
