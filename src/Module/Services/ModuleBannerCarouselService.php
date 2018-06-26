@@ -67,9 +67,10 @@ class ModuleBannerCarouselService {
     #
 
     public function add($group, $data) {
+        $datatable_admin = config('user.group.admin.datatable');
         $data_insert = [
-            'create_member_admin_id' => User::id(),
-            'update_member_admin_id' => User::id(),
+            "create_{$datatable_admin}_id" => User::id(),
+            "update_{$datatable_admin}_id" => User::id(),
             'module_group' => $group,
             'button_link' => array_get($data, 'button_link', '') ?: '',
             'status' => array_get($data, 'status'),
@@ -89,8 +90,9 @@ class ModuleBannerCarouselService {
     }
 
     public function edit($id, $group, $data) {
+        $datatable_admin = config('user.group.admin.datatable');
         $data_update = [
-            'update_member_admin_id' => User::id(),
+            "update_{$datatable_admin}_id" => User::id(),
             'button_link' => array_get($data, 'button_link', '') ?: '',
             'status' => array_get($data, 'status'),
         ];
@@ -113,8 +115,9 @@ class ModuleBannerCarouselService {
     }
 
     public function changeStatus($id, $group, $status) {
+        $datatable_admin = config('user.group.admin.datatable');
         $data_update = [
-            'update_member_admin_id' => User::id(),
+            "update_{$datatable_admin}_id" => User::id(),
             'status' => $status,
         ];
         $result = $this->moduleBannerCarouselRepository->update($id, $group, $data_update);
