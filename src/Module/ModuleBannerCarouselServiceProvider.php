@@ -3,6 +3,7 @@
 namespace Noking50\Modules\BannerCarousel;
 
 use Illuminate\Support\ServiceProvider;
+use Noking50\Modules\BannerCarousel\Services\ControllerOutputService;
 
 class ModuleBannerCarouselServiceProvider extends ServiceProvider {
 
@@ -26,6 +27,18 @@ class ModuleBannerCarouselServiceProvider extends ServiceProvider {
         $this->mergeConfigFrom(
                 __DIR__ . '/../config/module_banner_carousel.php', 'module_banner_carousel'
         );
+        $this->app->singleton('module_banner_carousel', function () {
+            return new ControllerOutputService;
+        });
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides() {
+        return ['module_banner_carousel'];
     }
 
 }

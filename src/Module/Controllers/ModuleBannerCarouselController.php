@@ -3,45 +3,43 @@
 namespace Noking50\Modules\BannerCarousel\Controllers;
 
 use Noking50\Modules\Required\Controllers\BaseController;
-use Noking50\Modules\BannerCarousel\Services\OutputService;
+use Noking50\Modules\BannerCarousel\Facades\ModuleBannerCarousel;
 use Route;
 
 class ModuleBannerCarouselController extends BaseController {
 
-    protected $outputService;
     protected $group;
 
-    public function __construct(OutputService $outputService) {
+    public function __construct() {
         parent::__construct();
         $this->setResponse('module_banner_carousel');
 
-        $this->outputService = $outputService;
         $this->group = Route::current()->getAction('module_banner_carousel_group') ?: '';
     }
 
     public function index() {
-        $output = $this->outputService->getBackendList($this->group);
+        $output = ModulesBannerCarousel::listBackend($this->group);
 
         $this->response->with($output);
         return $this->response;
     }
 
     public function add() {
-        $output = $this->outputService->getBackendAdd($this->group);
+        $output = ModulesBannerCarousel::detailBackendAdd($this->group);
 
         $this->response->with($output);
         return $this->response;
     }
 
     public function edit() {
-        $output = $this->outputService->getBackendEdit($this->group);
+        $output = ModulesBannerCarousel::detailBackendEdit($this->group);
 
         $this->response->with($output);
         return $this->response;
     }
 
     public function detail() {
-        $output = $this->outputService->getBackendDetail($this->group);
+        $output = ModulesBannerCarousel::detailBackend($this->group);
 
         $this->response->with($output);
         return $this->response;
@@ -50,28 +48,28 @@ class ModuleBannerCarouselController extends BaseController {
     ##
 
     public function ajax_add() {
-        $output = $this->outputService->getBackendAddSubmit($this->group);
+        $output = ModulesBannerCarousel::actionAdd($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;
     }
 
     public function ajax_edit() {
-        $output = $this->outputService->getBackendEditSubmit($this->group);
+        $output = ModulesBannerCarousel::actionEdit($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;
     }
 
     public function ajax_status() {
-        $output = $this->outputService->getBackendStatus($this->group);
+        $output = ModulesBannerCarousel::actionStatus($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;
     }
 
     public function ajax_delete() {
-        $output = $this->outputService->getBackendDelete($this->group);
+        $output = ModulesBannerCarousel::actionDelete($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;

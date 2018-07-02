@@ -11,7 +11,7 @@ use DB;
 use DBLog;
 use FileUpload;
 
-class OutputService {
+class ControllerOutputService {
 
     protected $moduleBannerCarouselService;
     protected $languageService;
@@ -25,15 +25,41 @@ class OutputService {
         $this->moduleBannerCarouselValidation = $moduleBannerCarouselValidation;
     }
 
-    public function getBackendList($group) {
+    ## List
+    
+    public function listBackend($group) {
         $dataSet_module_banner_carousel = $this->moduleBannerCarouselService->getListBackend($group);
 
         return [
             'dataSet_module_banner_carousel' => $dataSet_module_banner_carousel,
         ];
     }
+    
+    public function listFrontend($group) {
+        $dataSet_module_banner_carousel = $this->moduleBannerCarouselService->getListFrontend($group);
 
-    public function getBackendAdd($group) {
+        return [
+            'dataSet_module_banner_carousel' => $dataSet_module_banner_carousel,
+        ];
+    }
+
+    ## Detail
+    
+    public function detailBackend($group) {
+        $id = Route::input('id', 0);
+
+        $dataRow_module_banner_carousel = $this->moduleBannerCarouselService->getDetailBackend($id, $group);
+
+        $langs = is_null($dataRow_module_banner_carousel) ? [] : $dataRow_module_banner_carousel->lang->pluck('lang')->toArray();
+        $form_choose_lang = $this->languageService->getListFormChoose($langs);
+
+        return [
+            'dataRow_module_banner_carousel' => $dataRow_module_banner_carousel,
+            'form_choose_lang' => $form_choose_lang,
+        ];
+    }
+    
+    public function detailBackendAdd($group) {
         $form_choose_lang = $this->languageService->getListFormChoose();
         $dataSet_module_banner_carousel = $this->moduleBannerCarouselService->getListOrder($group);
 
@@ -42,8 +68,8 @@ class OutputService {
             'dataSet_module_banner_carousel' => $dataSet_module_banner_carousel,
         ];
     }
-
-    public function getBackendEdit($group) {
+    
+    public function detailBackendEdit($group) {
         $id = Route::input('id', 0);
 
         $dataRow_module_banner_carousel = $this->moduleBannerCarouselService->getDetailBackendEdit($id, $group);
@@ -59,21 +85,9 @@ class OutputService {
         ];
     }
 
-    public function getBackendDetail($group) {
-        $id = Route::input('id', 0);
+    ## Action
 
-        $dataRow_module_banner_carousel = $this->moduleBannerCarouselService->getDetailBackend($id, $group);
-
-        $langs = is_null($dataRow_module_banner_carousel) ? [] : $dataRow_module_banner_carousel->lang->pluck('lang')->toArray();
-        $form_choose_lang = $this->languageService->getListFormChoose($langs);
-
-        return [
-            'dataRow_module_banner_carousel' => $dataRow_module_banner_carousel,
-            'form_choose_lang' => $form_choose_lang,
-        ];
-    }
-
-    public function getBackendAddSubmit($group) {
+    public function actionAdd($group) {
         $this->moduleBannerCarouselValidation->validate_add();
 
         DB::beginTransaction();
@@ -105,7 +119,7 @@ class OutputService {
         ];
     }
 
-    public function getBackendEditSubmit($group) {
+    public function actionEdit($group) {
         $this->moduleBannerCarouselValidation->validate_edit();
 
         $id = Request::input('id');
@@ -164,8 +178,8 @@ class OutputService {
             'msg' => trans('message.success.edit'),
         ];
     }
-
-    public function getBackendStatus($group) {
+    
+    public function actionStatus($group) {
         $this->moduleBannerCarouselValidation->validate_status();
 
         $ids = Request::input('id', []);
@@ -195,8 +209,8 @@ class OutputService {
             'msg' => trans('message.success.edit'),
         ];
     }
-
-    public function getBackendDelete($group) {
+    
+    public function actionDelete($group) {
         $this->moduleBannerCarouselValidation->validate_delete();
 
         $ids = Request::input('id', []);
@@ -248,11 +262,4 @@ class OutputService {
 
     #
 
-    public function getFrontendList($group) {
-        $dataSet_module_banner_carousel = $this->moduleBannerCarouselService->getListFrontend($group);
-
-        return [
-            'dataSet_module_banner_carousel' => $dataSet_module_banner_carousel,
-        ];
-    }
 }
