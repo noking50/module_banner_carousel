@@ -18,28 +18,28 @@ class ModuleBannerCarouselController extends BaseController {
     }
 
     public function index() {
-        $output = ModulesBannerCarousel::listBackend($this->group);
+        $output = ModuleBannerCarousel::listBackend($this->group);
 
         $this->response->with($output);
         return $this->response;
     }
 
     public function add() {
-        $output = ModulesBannerCarousel::detailBackendAdd($this->group);
+        $output = ModuleBannerCarousel::detailBackendAdd($this->group);
 
         $this->response->with($output);
         return $this->response;
     }
 
     public function edit() {
-        $output = ModulesBannerCarousel::detailBackendEdit($this->group);
+        $output = ModuleBannerCarousel::detailBackendEdit($this->group);
 
         $this->response->with($output);
         return $this->response;
     }
 
     public function detail() {
-        $output = ModulesBannerCarousel::detailBackend($this->group);
+        $output = ModuleBannerCarousel::detailBackend($this->group);
 
         $this->response->with($output);
         return $this->response;
@@ -48,28 +48,28 @@ class ModuleBannerCarouselController extends BaseController {
     ##
 
     public function ajax_add() {
-        $output = ModulesBannerCarousel::actionAdd($this->group);
+        $output = ModuleBannerCarousel::actionAdd($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;
     }
 
     public function ajax_edit() {
-        $output = ModulesBannerCarousel::actionEdit($this->group);
+        $output = ModuleBannerCarousel::actionEdit($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;
     }
 
     public function ajax_status() {
-        $output = ModulesBannerCarousel::actionStatus($this->group);
+        $output = ModuleBannerCarousel::actionStatus($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;
     }
 
     public function ajax_delete() {
-        $output = ModulesBannerCarousel::actionDelete($this->group);
+        $output = ModuleBannerCarousel::actionDelete($this->group);
 
         $this->response = array_merge($this->response, $output);
         return $this->response;

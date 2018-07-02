@@ -27,8 +27,12 @@ class ModuleBannerCarouselServiceProvider extends ServiceProvider {
         $this->mergeConfigFrom(
                 __DIR__ . '/../config/module_banner_carousel.php', 'module_banner_carousel'
         );
-        $this->app->singleton('module_banner_carousel', function () {
-            return new ControllerOutputService;
+        $this->app->singleton('module_banner_carousel', function ($app) {
+            return new ControllerOutputService(
+                    $app['Noking50\Modules\BannerCarousel\Services\ModuleBannerCarouselService'], 
+                    $app['Noking50\Modules\Required\Services\LanguageService'], 
+                    $app['Noking50\Modules\BannerCarousel\Validations\ModuleBannerCarouselValidation']
+            );
         });
     }
 
